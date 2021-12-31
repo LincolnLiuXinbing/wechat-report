@@ -4,7 +4,7 @@
       <div class="b">#2021</div>
       <div class="c">年度聊天报告</div>
       <div class="d">关键词</div>
-      <div class="e">吃</div>
+      <div class="e">哈哈</div>
       <div class="f"></div>
       <div class="d">爱意词</div>
       <div class="e">{{ b }}</div>

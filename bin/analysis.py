@@ -3,12 +3,13 @@ import functools
 import pymysql
 import jieba
 import json
+import datetime
 
 conn = pymysql.connect(
     host='localhost',
     user='root',
-    password='000000',
-    db='test',
+    password='',
+    db='wechat_report',
     charset='utf8mb4',
     port=3306)
 
@@ -26,6 +27,18 @@ for item in r:
     if (max_item is None or len(content) > len(max_item[3])) and content.find('http') == -1:
         max_item = item
 print(max_item)
+
+latest_item = None
+for item in r:
+    if latest_item is None:
+        latest_item = item
+    
+    time = datetime.datetime.strptime(item[2].strftime("%H:%M:%S"), "%H:%M:%S")
+    latest_time = datetime.datetime.strptime(latest_item[2].strftime("%H:%M:%S"), "%H:%M:%S")
+
+    if time > latest_time:
+        latest_item = item;
+print(latest_item)
 
 # # 进行分词
 word_arr = []
@@ -58,7 +71,7 @@ def custom_sort(x, y):
 
 result['word'] = sorted(word_count_arr, key=functools.cmp_to_key(custom_sort))
 
-with open("result.json", "w", encoding="utf-8") as f:
+with open("./result.json", "w", encoding="utf-8") as f:
     f.write(
         json.dumps(result, ensure_ascii=False)
     )
